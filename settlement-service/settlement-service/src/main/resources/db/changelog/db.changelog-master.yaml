@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260824_init_public_scheme
+      author: danang
+      labels: table migration public scheme
+      changes:
+        - sqlFile:
+            path: db/changelog/public/ddl/20260824_init_public_scheme.sql
+            relativeToChangelogFile: false
