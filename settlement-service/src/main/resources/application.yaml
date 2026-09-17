@@ -1,0 +1,66 @@
+app:
+  version : '@project.version@'
+
+spring:
+  application:
+    name: settlement
+
+  web:
+    mvc:
+      servlet:
+        path: /${spring.application.name}
+
+  config:
+    import:
+      - classpath:config/keycloak-config.yml
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/settlement-db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/patungan-ku
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:19000/eureka/
+    healthcheck:
+      enabled: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://host.docker.internal:9411/api/v2/spans
+server:
+  port: 8082
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    config-url: /settlement/v3/api-docs/swagger-config
+    urls:
+      - name: API - V1
+        url: /settlement/v3/api-docs/API - V1
+    urls-primary-name: API - V1
+
+logging:
+  level:
+    '[id.patunganku.event_service]': DEBUG

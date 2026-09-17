@@ -1,0 +1,5 @@
+keycloak:
+  base-url: http://localhost:8180
+  realm: patungan-ku
+  client-id: event-svc
+  client-secret: D8nFnSWHOV8uLdDZIjEaNh4wqOnjKHtTPjdbzR9ZtvVRRvtULWGmBbnJJz89FabwMt62PPn9HbYDrdKC9W8Xp1

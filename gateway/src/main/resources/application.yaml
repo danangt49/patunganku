@@ -1,0 +1,67 @@
+app:
+  version: '@project.version@'
+
+server:
+  port: 9002
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://host.docker.internal:9411/api/v2/spans
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    config:
+      enabled: false
+
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: event-service
+              uri: lb://event-service
+              predicates:
+                - Path=/event/**
+              # StripPrefix dihapus — event-service sudah expect prefix /event sendiri
+
+            - id: settlement-service
+              uri: lb://settlement-service
+              predicates:
+                - Path=/settlement/**
+
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/patungan-ku
+
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://localhost:19000/eureka/
+
+logging:
+  level:
+    web: DEBUG
+
+discord:
+  webhook-url: https://discord.com/api/webhooks/1549771710646190111/RRFudss47Clvij5vGY0Egc11pa9qZ9l_11w6y7SSx-4-IiNpIFFFh6InXCt0joQYgys_
